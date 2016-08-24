@@ -14,7 +14,7 @@ class CustomAttributeRegistry {
 
   define(attrName, Constructor) {
     this._attrs[attrName] = Constructor;
-    this._upgrade(attrName);
+    this._upgradeAttr(attrName);
   }
 
   get(attrName){
@@ -43,8 +43,10 @@ class CustomAttributeRegistry {
 
     this.childMO = new MutationObserver(function(mutations){
       var downgrade = customAttributes._downgrade.bind(customAttributes);
+      var upgrade = customAttributes._upgradeElement.bind(customAttributes);
       forEach.call(mutations, function(m){
         forEach.call(m.removedNodes, downgrade);
+        forEach.call(m.addedNodes, upgrade)
       });
     });
 
@@ -54,11 +56,21 @@ class CustomAttributeRegistry {
     });
   }
 
-  _upgrade(attrName) {
+  _upgradeAttr(attrName) {
     var document = this.ownerDocument;
     var matches = document.querySelectorAll("[" + attrName + "]");
     for(var match of matches) {
       this._found(attrName, match);
+    }
+  }
+
+  _upgradeElement(element) {
+    if(element.nodeType !== 1) return;
+
+    for(var attr of element.attributes) {
+      if(this.get(attr.name)) {
+        this._found(attr.name, element);
+      }
     }
   }
 

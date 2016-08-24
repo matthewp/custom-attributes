@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+  <title>changedCallback() tests</title>
+
+  <script src="../node_modules/webcomponents.js/webcomponents-lite.min.js" defer></script>
+  <script src="../attr.js" defer></script>
+  <link rel="import" href="../node_modules/mocha-test/mocha-test.html" defer>
+</head>
+<body>
+<div id="fixture"></div>
+<mocha-test>
+<template>
+<script>
+  describe('changedCallback()', function(){
+    function later(cb){
+      setTimeout(cb, 4);
+    }
+
+    afterEach(function(){
+      fixture.innerHTML = '';
+    });
+
+    it('Is called when an attribute changes value', function(done){
+      class SomeAttr {
+        changedCallback() {
+          assert.ok(true);
+          done();
+        }
+      }
+
+      customAttributes.define('some-attr', SomeAttr);
+
+      var el = document.createElement('article');
+      el.setAttribute('some-attr', 'foo');
+      fixture.appendChild(el);
+
+      later(function(){
+        el.setAttribute('some-attr', 'bar');
+      });
+    });
+
+    it('Is not called when an attribute\'s value remains the same', function(done){
+      class AnotherAttr {
+        changedCallback() {
+          assert.ok(false);
+        }
+      }
+
+      customAttributes.define('another-attr', AnotherAttr);
+
+      var el = document.createElement('span');
+      el.setAttribute('another-attr', 'foo');
+      fixture.appendChild(el);
+
+      later(function(){
+        el.setAttribute('another-attr', 'foo');
+        later(done);
+      });
+    });
+  });
+</script>
+</template>
+</mocha-test>
+</body>
+</html>
