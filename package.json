@@ -1,0 +1,33 @@
+{
+  "name": "custom-attributes",
+  "version": "1.0.0",
+  "description": "Custom attributes, like custom elements, but for attributes",
+  "main": "attr.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "testee test/connect.html test/disconnect.html --browsers firefox"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewp/custom-attributes.git"
+  },
+  "keywords": [
+    "web",
+    "components"
+  ],
+  "files": [
+    "attr.js"
+  ],
+  "author": "Matthew Phillips",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/matthewp/custom-attributes/issues"
+  },
+  "homepage": "https://github.com/matthewp/custom-attributes#readme",
+  "devDependencies": {
+    "mocha-test": "^1.0.3",
+    "webcomponents.js": "^0.7.22"
+  }
+}

@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+  <title>disconnectedCallback() tests</title>
+
+  <script src="../node_modules/webcomponents.js/webcomponents-lite.min.js" defer></script>
+  <script src="../attr.js" defer></script>
+  <link rel="import" href="../node_modules/mocha-test/mocha-test.html" defer>
+</head>
+<body>
+<div id="fixture"></div>
+
+<mocha-test>
+<template>
+<script>
+  describe('disconnectedCallback()', function(){
+    function later(cb) {
+      setTimeout(cb, 0);
+    }
+
+    afterEach(function(){
+      fixture.innerHTML = '';
+    });
+
+    it('Is called when removeAttribute() is used', function(done){
+      class MyAttr {
+        connectedCallback() {
+          later(function(){
+            el.removeAttribute('my-attr');
+          });
+        }
+
+        changedCallback() {
+          assert.ok(false, 'changed shouldn\'t be called');
+        }
+
+        disconnectedCallback() {
+          assert.ok(true, 'was called');
+          done();
+        }
+      }
+
+      customAttributes.define('my-attr', MyAttr);
+
+      var el = document.createElement('span');
+      fixture.appendChild(el);
+
+      el.setAttribute('my-attr', 'test');
+    });
+
+    it('Is called when the element is removed', function(done){
+      class SomeAttr {
+        connectedCallback() {
+          later(function(){
+            fixture.removeChild(el);
+          });
+        }
+
+        disconnectedCallback() {
+          assert.ok(true, 'was called');
+          done();
+        }
+      }
+
+      customAttributes.define('some-attr', SomeAttr);
+
+      var el = document.createElement('span');
+      fixture.appendChild(el);
+
+      el.setAttribute('some-attr', 'test');
+    });
+  });
+</script>
+</template>
+</mocha-test>
+</body>
+</html>
