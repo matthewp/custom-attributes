@@ -8,7 +8,11 @@ Define custom attributes in the same way you can define custom elements, which a
 ## Install
 
 ```shell
-npm install custom-elements --save
+npm install custom-attributes --save
+```
+
+```html
+<script src="node_modules/custom-attributes/attr.js" defer></script>
 ```
 
 ## Example
