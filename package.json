@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "testee test/connect.html test/disconnect.html --browsers firefox"
+    "test": "testee test/connect.html test/disconnect.html test/change.html --browsers firefox"
   },
   "repository": {
     "type": "git",
