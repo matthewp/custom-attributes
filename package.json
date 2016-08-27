@@ -18,7 +18,8 @@
     "components"
   ],
   "files": [
-    "attr.js"
+    "attr.js",
+    "attr.html"
   ],
   "author": "Matthew Phillips",
   "license": "BSD-2-Clause",
