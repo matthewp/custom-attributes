@@ -1,0 +1,21 @@
+{
+  "name": "custom-attributes",
+  "description": "Custom attributes, like custom elements, but for attributes",
+  "main": "attr.js",
+  "authors": [
+    "Matthew Phillips"
+  ],
+  "license": "BSD-2-Clause",
+  "keywords": [
+    "web",
+    "components"
+  ],
+  "homepage": "https://github.com/matthewp/custom-attributes",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
