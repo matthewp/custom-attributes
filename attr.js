@@ -7,18 +7,24 @@ class CustomAttributeRegistry {
     }
 
     this.ownerDocument = ownerDocument;
-    this._attrs = {};
+    this._attrMap = new Map();
     this._elementMap = new WeakMap();
     this._observe();
   }
 
   define(attrName, Constructor) {
-    this._attrs[attrName] = Constructor;
+    this._attrMap.set(attrName, Constructor);
     this._upgradeAttr(attrName);
   }
 
-  get(attrName){
-    return this._attrs[attrName];
+  get(element, attrName) {
+    var map = this._elementMap.get(element);
+    if(!map) return;
+    return map.get(attrName);
+  }
+
+  _getConstructor(attrName){
+    return this._attrMap.get(attrName);
   }
 
   _observe(){
@@ -28,7 +34,7 @@ class CustomAttributeRegistry {
 
     this.attrMO = new MutationObserver(function(mutations){
       forEach.call(mutations, function(m){
-        var attr = customAttributes.get(m.attributeName);
+        var attr = customAttributes._getConstructor(m.attributeName);
         if(attr) {
           customAttributes._found(m.attributeName, m.target, m.oldValue);
         }
@@ -68,7 +74,7 @@ class CustomAttributeRegistry {
     if(element.nodeType !== 1) return;
 
     for(var attr of element.attributes) {
-      if(this.get(attr.name)) {
+      if(this._getConstructor(attr.name)) {
         this._found(attr.name, element);
       }
     }
@@ -97,7 +103,7 @@ class CustomAttributeRegistry {
     var inst = map.get(attrName);
     var newVal = el.getAttribute(attrName);
     if(!inst) {
-      var Constructor = this.get(attrName);
+      var Constructor = this._getConstructor(attrName);
       inst = new Constructor();
       map.set(attrName, inst);
       inst.ownerElement = el;
