@@ -1,3 +1,4 @@
+(function(){
 var forEach = Array.prototype.forEach;
 
 class CustomAttributeRegistry {
@@ -31,34 +32,30 @@ class CustomAttributeRegistry {
     var customAttributes = this;
     var document = this.ownerDocument;
     var root = document.documentElement;
+    var downgrade = this._downgrade.bind(this);
+    var upgrade = this._upgradeElement.bind(this);
 
-    this.attrMO = new MutationObserver(function(mutations){
+    this.observer = new MutationObserver(function(mutations){
       forEach.call(mutations, function(m){
-        var attr = customAttributes._getConstructor(m.attributeName);
-        if(attr) {
-          customAttributes._found(m.attributeName, m.target, m.oldValue);
+        if(m.type === 'attributes') {
+          var attr = customAttributes._getConstructor(m.attributeName);
+          if(attr) {
+            customAttributes._found(m.attributeName, m.target, m.oldValue);
+          }
+        }
+        // chlidList
+        else {
+          forEach.call(m.removedNodes, downgrade);
+          forEach.call(m.addedNodes, upgrade);
         }
       });
     });
 
-    this.attrMO.observe(root, {
+    this.observer.observe(root, {
+      childList: true,
       subtree: true,
       attributes: true,
       attributeOldValue: true
-    });
-
-    this.childMO = new MutationObserver(function(mutations){
-      var downgrade = customAttributes._downgrade.bind(customAttributes);
-      var upgrade = customAttributes._upgradeElement.bind(customAttributes);
-      forEach.call(mutations, function(m){
-        forEach.call(m.removedNodes, downgrade);
-        forEach.call(m.addedNodes, upgrade)
-      });
-    });
-
-    this.childMO.observe(root, {
-      childList: true,
-      subtree: true
     });
   }
 
@@ -134,3 +131,4 @@ class CustomAttributeRegistry {
 }
 
 window.customAttributes = new CustomAttributeRegistry(document);
+})();
