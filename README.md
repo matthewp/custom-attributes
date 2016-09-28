@@ -46,6 +46,44 @@ class BgColor {
 customAttributes.define('bg-color', BgColor);
 ```
 
+## API
+
+custom-attributes follows a very similar API as v1 custom elements, but rather than a class instance representing the host element, the class instance is meant to represent the *attribute*.
+
+### Lifecycle callbacks
+
+#### connectedCallback
+
+This is called when the attribute is first connected to the `document`. If the host element is already in the DOM, and the attribute is set, connectedCallback will be called as all registered attributes are upgraded.
+
+If the host element is already in the DOM and the attribute is programmatically added via `setAttribute`, then connectedCallback will be called asynchronously after.
+
+If the host element is being programmatically created and the attribute is set before the element is inserted into the DOM, connectedCallback will only call when the host element is inserted.
+
+#### disconnectedCallback
+
+Called when the attribute is no longer part of the host element, or the host document. This callback should be used if any cleanup is needed.
+
+If the attribute is removed via `removeAttribute`, then disconnectedCallback will be called asynchronously after this change. If the host element is removed from the DOM, disconnectedCallback will be called asynchronously after as well.
+
+#### changedCallback
+
+Called any time the attribute's `value` changes, after connected. Useful if you need to perform work based on the attribute value such as the example given in this readme.
+
+### Properties
+
+#### ownerElement
+
+`this.ownerElement` refers to the element which the attribute is attached.
+
+#### name
+
+The attribute's name. Since multiple class definitions can be used for multiple attribute names, `this.name` is useful if you need to know what the attribute is being referred to as.
+
+#### value
+
+The current value of the attribute (the string value) is available as `this.value`.
+
 ## License
 
 BSD 2 Clause
