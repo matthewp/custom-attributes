@@ -30,8 +30,7 @@ class CustomAttributeRegistry {
 
   _observe(){
     var customAttributes = this;
-    var document = this.ownerDocument;
-    var root = document.documentElement;
+    var root = this.ownerDocument;
     var downgrade = this._downgrade.bind(this);
     var upgrade = this._upgradeElement.bind(this);
 
@@ -130,5 +129,6 @@ class CustomAttributeRegistry {
   }
 }
 
+window.CustomAttributeRegistry = CustomAttributeRegistry;
 window.customAttributes = new CustomAttributeRegistry(document);
 })();
