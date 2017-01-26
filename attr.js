@@ -129,5 +129,6 @@ class CustomAttributeRegistry {
   }
 }
 
+window.CustomAttributeRegistry = CustomAttributeRegistry;
 window.customAttributes = new CustomAttributeRegistry(document);
 })();
