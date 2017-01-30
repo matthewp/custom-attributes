@@ -58,8 +58,9 @@ class CustomAttributeRegistry {
     });
   }
 
-  _upgradeAttr(attrName) {
-    var document = this.ownerDocument;
+  _upgradeAttr(attrName, document) {
+    document = document || this.ownerDocument;
+
     var matches = document.querySelectorAll("[" + attrName + "]");
     for(var match of matches) {
       this._found(attrName, match);
@@ -73,6 +74,10 @@ class CustomAttributeRegistry {
       if(this._getConstructor(attr.name)) {
         this._found(attr.name, element);
       }
+    }
+    
+    for(var attr of this._attrMap.keys()) {
+      this._upgradeAttr(attr, element);
     }
   }
 
