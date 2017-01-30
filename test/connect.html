@@ -65,6 +65,21 @@ customAttributes.define('bg-color', BgColorAttr);
         done();
       });
     });
+
+    it('Is called on nested elements when root element is added to the DOM', function(done){
+      var article = document.createElement('article'),
+          header = document.createElement('header');
+
+      header.setAttribute('bg-color', 'blue');
+      article.appendChild(header);
+
+      fixture.appendChild(article);
+
+      later(function(){
+        assert.equal(header.style.backgroundColor, 'blue');
+        done();
+      });
+    });
   });
 </script>
 </template>
