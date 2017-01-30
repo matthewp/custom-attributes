@@ -29,6 +29,7 @@
   "homepage": "https://github.com/matthewp/custom-attributes#readme",
   "devDependencies": {
     "mocha-test": "^1.0.3",
+    "testee": "^0.3.0",
     "webcomponents.js": "^0.7.22"
   }
 }
