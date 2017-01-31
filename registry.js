@@ -1,6 +1,3 @@
-(function () {
-'use strict';
-
 class CustomAttributeRegistry {
   constructor(ownerDocument){
     if(!ownerDocument) {
@@ -134,9 +131,4 @@ class CustomAttributeRegistry {
   }
 }
 
-var customAttributes = new CustomAttributeRegistry(document);
-
-window.customAttributes = customAttributes;
-window.CustomAttributeRegistry = CustomAttributeRegistry;
-
-}());
+export default CustomAttributeRegistry;
