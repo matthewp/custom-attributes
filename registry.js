@@ -1,3 +1,5 @@
+var forEach = Array.prototype.forEach;
+
 class CustomAttributeRegistry {
   constructor(ownerDocument){
     if(!ownerDocument) {

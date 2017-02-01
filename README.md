@@ -20,7 +20,7 @@ Add as a script tag:
 Or import as an ES module:
 
 ```js
-import { customAttributes } from 'custom-attributes';
+import customAttributes from 'custom-attributes';
 ```
 
 Or you can just import the CustomAttributeRegistry and create your own instance:
