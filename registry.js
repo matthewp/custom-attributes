@@ -1,6 +1,3 @@
-(function () {
-'use strict';
-
 var forEach = Array.prototype.forEach;
 
 class CustomAttributeRegistry {
@@ -136,9 +133,4 @@ class CustomAttributeRegistry {
   }
 }
 
-var customAttributes = new CustomAttributeRegistry(document);
-
-window.customAttributes = customAttributes;
-window.CustomAttributeRegistry = CustomAttributeRegistry;
-
-}());
+export default CustomAttributeRegistry;

@@ -2,7 +2,7 @@
   "name": "custom-attributes",
   "version": "1.0.1",
   "description": "Custom attributes, like custom elements, but for attributes",
-  "main": "attr.js",
+  "main": "index.js",
   "directories": {
     "test": "test"
   },
@@ -29,6 +29,7 @@
   "homepage": "https://github.com/matthewp/custom-attributes#readme",
   "devDependencies": {
     "mocha-test": "^1.0.3",
+    "rollup": "^0.41.4",
     "testee": "^0.3.0",
     "webcomponents.js": "^0.7.22"
   }

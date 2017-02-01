@@ -11,8 +11,24 @@ Define custom attributes in the same way you can define custom elements, which a
 npm install custom-attributes --save
 ```
 
+Add as a script tag:
+
 ```html
 <script src="node_modules/custom-attributes/attr.js" defer></script>
+```
+
+Or import as an ES module:
+
+```js
+import customAttributes from 'custom-attributes';
+```
+
+Or you can just import the CustomAttributeRegistry and create your own instance:
+
+```js
+import CustomAttributeRegistry from 'custom-attributes/registry';
+
+const customAttributes = new CustomAttributeRegistry(document);
 ```
 
 ## Example
