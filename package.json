@@ -1,6 +1,6 @@
 {
   "name": "custom-attributes",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Custom attributes, like custom elements, but for attributes",
   "main": "index.js",
   "directories": {
