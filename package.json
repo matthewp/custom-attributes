@@ -19,7 +19,10 @@
   ],
   "files": [
     "attr.js",
-    "attr.html"
+    "attr.html",
+    "global.js",
+    "index.js",
+    "registry.js"
   ],
   "author": "Matthew Phillips",
   "license": "BSD-2-Clause",
