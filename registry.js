@@ -69,11 +69,13 @@ class CustomAttributeRegistry {
   _upgradeElement(element) {
     if(element.nodeType !== 1) return;
 
-    for(var attr of element.attributes) {
+    // Use a forEach as Safari 10 doesn't support for...of on NamedNodeMap (attributes)
+    forEach.call(element.attributes, function(attr) {
       if(this._getConstructor(attr.name)) {
         this._found(attr.name, element);
       }
-    }
+    }, this);
+
 
     for(var attr of this._attrMap.keys()) {
       this._upgradeAttr(attr, element);
