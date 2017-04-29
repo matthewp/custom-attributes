@@ -64,9 +64,9 @@ class CustomAttributeRegistry {
     document = document || this.ownerDocument;
 
     var matches = document.querySelectorAll("[" + attrName + "]");
-    for(var match of matches) {
+    forEach.call(matches, function(match) {
       this._found(attrName, match);
-    }
+    }, this);
   }
 
   _upgradeElement(element) {
@@ -78,7 +78,6 @@ class CustomAttributeRegistry {
         this._found(attr.name, element);
       }
     }, this);
-
 
     for(var attr of this._attrMap.keys()) {
       this._upgradeAttr(attr, element);
