@@ -78,20 +78,20 @@ class CustomAttributeRegistry {
       }
     }, this);
 
-    for(var attr of this._attrMap.keys()) {
+    this._attrMap.forEach(function(constructor, attr) {
       this._upgradeAttr(attr, element);
-    }
+    }, this);
   }
 
   _downgrade(element) {
     var map = this._elementMap.get(element);
     if(!map) return;
 
-    for(var inst of map.values()) {
-      if(inst.disconnectedCallback) {
+    map.forEach(function(inst) {
+      if (inst.disconnectedCallback) {
         inst.disconnectedCallback();
       }
-    }
+    }, this);
 
     this._elementMap.delete(element);
   }
