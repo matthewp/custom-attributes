@@ -64,9 +64,11 @@ class CustomAttributeRegistry {
     document = document || this.ownerDocument;
 
     var matches = document.querySelectorAll("[" + attrName + "]");
-    for(var match of matches) {
+
+    // Use a forEach as Edge doesn't support for...of on a NodeList
+    forEach.call(matches, function(match) {
       this._found(attrName, match);
-    }
+    }, this);
   }
 
   _upgradeElement(element) {
@@ -79,21 +81,20 @@ class CustomAttributeRegistry {
       }
     }, this);
 
-
-    for(var attr of this._attrMap.keys()) {
+    this._attrMap.forEach(function(constructor, attr) {
       this._upgradeAttr(attr, element);
-    }
+    }, this);
   }
 
   _downgrade(element) {
     var map = this._elementMap.get(element);
     if(!map) return;
 
-    for(var inst of map.values()) {
-      if(inst.disconnectedCallback) {
+    map.forEach(function(inst) {
+      if (inst.disconnectedCallback) {
         inst.disconnectedCallback();
       }
-    }
+    }, this);
 
     this._elementMap.delete(element);
   }
