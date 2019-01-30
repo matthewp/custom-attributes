@@ -4,7 +4,7 @@
   <title>disconnectedCallback() tests</title>
 
   <script src="../node_modules/webcomponents.js/webcomponents-lite.min.js" defer></script>
-  <script src="../attr.js" defer></script>
+  <script src="../pkg/dist-umd/index.js" defer></script>
   <link rel="import" href="../node_modules/mocha-test/mocha-test.html" defer>
 </head>
 <body>
@@ -40,7 +40,7 @@
         }
       }
 
-      customAttributes.define('my-attr', MyAttr);
+      customAttributes.default.define('my-attr', MyAttr);
 
       var el = document.createElement('span');
       fixture.appendChild(el);
@@ -62,7 +62,7 @@
         }
       }
 
-      customAttributes.define('some-attr', SomeAttr);
+      customAttributes.default.define('some-attr', SomeAttr);
 
       var el = document.createElement('span');
       fixture.appendChild(el);

@@ -26,7 +26,7 @@ import customAttributes from 'custom-attributes';
 Or you can just import the CustomAttributeRegistry and create your own instance:
 
 ```js
-import CustomAttributeRegistry from 'custom-attributes/registry';
+import {CustomAttributeRegistry} from 'custom-attributes';
 
 const customAttributes = new CustomAttributeRegistry(document);
 ```
@@ -59,7 +59,7 @@ class BgColor {
   }
 }
 
-customAttributes.define('bg-color', BgColor);
+customAttributes.default.define('bg-color', BgColor);
 ```
 
 ## API
