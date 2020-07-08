@@ -117,8 +117,7 @@ class CustomAttributeRegistry {
       }
     }
     // Attribute was removed
-    else if(newVal == null && !!inst.value) {
-      inst.value = newVal;
+    else if(newVal == null) {
       if(inst.disconnectedCallback) {
         inst.disconnectedCallback();
       }

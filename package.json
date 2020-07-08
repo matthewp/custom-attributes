@@ -15,7 +15,8 @@
   },
   "scripts": {
     "build": "pack build",
-    "test": "testee test/connect.html test/disconnect.html test/change.html --browsers firefox"
+    "test": "testee test/connect.html test/disconnect.html test/change.html --browsers firefox",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
