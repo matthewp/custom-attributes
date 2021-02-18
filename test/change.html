@@ -1,66 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-  <title>changedCallback() tests</title>
+	<head>
+		<title>changedCallback() tests</title>
 
-  <script src="../node_modules/webcomponents.js/webcomponents-lite.min.js" defer></script>
-  <script src="../pkg/dist-umd/index.js" defer></script>
-  <link rel="import" href="../node_modules/mocha-test/mocha-test.html" defer>
-</head>
-<body>
-<div id="fixture"></div>
-<mocha-test>
-<template>
-<script>
-  describe('changedCallback()', function(){
-    function later(cb){
-      setTimeout(cb, 4);
-    }
+		<script src="../node_modules/webcomponents.js/webcomponents-lite.min.js" defer></script>
+		<script src="../pkg/dist-umd/index.js" defer></script>
+		<link rel="import" href="../node_modules/mocha-test/mocha-test.html" defer />
+	</head>
+	<body>
+		<div id="fixture"></div>
+		<mocha-test>
+			<template>
+				<script>
+					describe('changedCallback()', function() {
+						function later(cb) {
+							setTimeout(cb, 4)
+						}
 
-    afterEach(function(){
-      fixture.innerHTML = '';
-    });
+						afterEach(function() {
+							fixture.innerHTML = ''
+						})
 
-    it('Is called when an attribute changes value', function(done){
-      class SomeAttr {
-        changedCallback() {
-          assert.ok(true);
-          done();
-        }
-      }
+						it('Is called when an attribute changes value', function(done) {
+							class SomeAttr {
+								changedCallback() {
+									assert.ok(true)
+									done()
+								}
+							}
 
-      customAttributes.default.define('some-attr', SomeAttr);
+							customAttributes.default.define('some-attr', SomeAttr)
 
-      var el = document.createElement('article');
-      el.setAttribute('some-attr', 'foo');
-      fixture.appendChild(el);
+							var el = document.createElement('article')
+							el.setAttribute('some-attr', 'foo')
+							fixture.appendChild(el)
 
-      later(function(){
-        el.setAttribute('some-attr', 'bar');
-      });
-    });
+							later(function() {
+								el.setAttribute('some-attr', 'bar')
+							})
+						})
 
-    it('Is not called when an attribute\'s value remains the same', function(done){
-      class AnotherAttr {
-        changedCallback() {
-          assert.ok(false);
-        }
-      }
+						it("Is not called when an attribute's value remains the same", function(done) {
+							class AnotherAttr {
+								changedCallback() {
+									assert.ok(false)
+								}
+							}
 
-      customAttributes.default.define('another-attr', AnotherAttr);
+							customAttributes.default.define('another-attr', AnotherAttr)
 
-      var el = document.createElement('span');
-      el.setAttribute('another-attr', 'foo');
-      fixture.appendChild(el);
+							var el = document.createElement('span')
+							el.setAttribute('another-attr', 'foo')
+							fixture.appendChild(el)
 
-      later(function(){
-        el.setAttribute('another-attr', 'foo');
-        later(done);
-      });
-    });
-  });
-</script>
-</template>
-</mocha-test>
-</body>
+							later(function() {
+								el.setAttribute('another-attr', 'foo')
+								later(done)
+							})
+						})
+					})
+				</script>
+			</template>
+		</mocha-test>
+	</body>
 </html>

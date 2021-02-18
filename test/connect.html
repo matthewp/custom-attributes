@@ -1,88 +1,87 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-  <title> simple test</title>
+	<head>
+		<title>simple test</title>
 
-  <script src="../node_modules/webcomponents.js/webcomponents-lite.min.js" defer></script>
-  <script src="../pkg/dist-umd/index.js"></script>
-  <link rel="import" href="../node_modules/mocha-test/mocha-test.html">
-</head>
-<body>
+		<script src="../node_modules/webcomponents.js/webcomponents-lite.min.js" defer></script>
+		<script src="../pkg/dist-umd/index.js"></script>
+		<link rel="import" href="../node_modules/mocha-test/mocha-test.html" />
+	</head>
+	<body>
+		<article bg-color="red">
+			<p>This article is static</p>
+		</article>
 
-<article bg-color="red">
-  <p>This article is static</p>
-</article>
+		<div id="fixture"></div>
 
-<div id="fixture"></div>
+		<script>
+			;(function() {
+				class BgColorAttr {
+					connectedCallback() {
+						this.setColor()
+					}
 
-<script>
-(function(){
-class BgColorAttr {
-  connectedCallback() {
-    this.setColor();
-  }
+					changedCallback(oldValue, newValue) {
+						this.setColor()
+					}
 
-  changedCallback(oldValue, newValue) {
-    this.setColor();
-  }
+					setColor() {
+						var color = this.value || ''
+						this.ownerElement.style.backgroundColor = color
+					}
+				}
 
-  setColor() {
-    var color = this.value || '';
-    this.ownerElement.style.backgroundColor = color;
-  }
-}
+				customAttributes.default.define('bg-color', BgColorAttr)
+			})()
+		</script>
 
-customAttributes.default.define('bg-color', BgColorAttr);
-})();
-</script>
+		<mocha-test>
+			<template>
+				<script>
+					describe('connectedCallback()', function() {
+						function later(cb) {
+							setTimeout(cb, 4)
+						}
 
-<mocha-test>
-<template>
-<script>
-  describe('connectedCallback()', function(){
-    function later(cb){
-      setTimeout(cb, 4);
-    }
+						afterEach(function() {
+							fixture.innerHTML = ''
+						})
 
-    afterEach(function(){
-      fixture.innerHTML = '';
-    });
+						it('Is called when element is already in the DOM', function() {
+							var article = document.querySelector('article')
+							assert.equal(article.style.backgroundColor, 'red')
+						})
 
-    it('Is called when element is already in the DOM', function(){
-      var article = document.querySelector('article');
-      assert.equal(article.style.backgroundColor, 'red');
-    });
+						it('Is called when an attribute is dynamically created', function(done) {
+							var article = document.createElement('article')
+							article.textContent = 'hello world'
+							fixture.appendChild(article)
 
-    it('Is called when an attribute is dynamically created', function(done){
-      var article = document.createElement('article');
-      article.textContent = 'hello world';
-      fixture.appendChild(article);
+							article.setAttribute('bg-color', 'blue')
 
-      article.setAttribute('bg-color', 'blue');
+							later(function() {
+								assert.equal(article.style.backgroundColor, 'blue')
+								done()
+							})
+						})
 
-      later(function(){
-        assert.equal(article.style.backgroundColor, 'blue');
-        done();
-      });
-    });
+						it('Is called on nested elements when root element is added to the DOM', function(done) {
+							var article = document.createElement('article'),
+								header = document.createElement('header')
 
-    it('Is called on nested elements when root element is added to the DOM', function(done){
-      var article = document.createElement('article'),
-          header = document.createElement('header');
+							header.setAttribute('bg-color', 'blue')
+							article.appendChild(header)
 
-      header.setAttribute('bg-color', 'blue');
-      article.appendChild(header);
+							fixture.appendChild(article)
 
-      fixture.appendChild(article);
-
-      later(function(){
-        assert.equal(header.style.backgroundColor, 'blue');
-        done();
-      });
-    });
-  });
-</script>
-</template>
-</mocha-test>
-</body>
+							later(function() {
+								assert.equal(header.style.backgroundColor, 'blue')
+								done()
+							})
+						})
+					})
+				</script>
+			</template>
+		</mocha-test>
+	</body>
 </html>

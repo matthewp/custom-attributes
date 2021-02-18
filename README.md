@@ -20,51 +20,51 @@ Add as a script tag:
 Or import as an ES module:
 
 ```js
-import customAttributes from 'custom-attributes';
+import customAttributes from 'custom-attributes'
 ```
 
 Or you can just import the CustomAttributeRegistry and create your own instance:
 
 ```js
-import {CustomAttributeRegistry} from 'custom-attributes';
+import {CustomAttributeRegistry} from 'custom-attributes'
 
-const customAttributes = new CustomAttributeRegistry(document);
+const customAttributes = new CustomAttributeRegistry(document)
 ```
 
 ## Example
 
 ```html
 <article bg-color="green">
-  <p>This will be shown in a green background!</p>
+	<p>This will be shown in a green background!</p>
 </article>
 ```
 
 ```js
 class BgColor {
-  connectedCallback() {
-    this.setColor();
-  }
+	connectedCallback() {
+		this.setColor()
+	}
 
-  disconnectedCallback() {
-    // cleanup here!
-  }
+	disconnectedCallback() {
+		// cleanup here!
+	}
 
-  // Called whenever the attribute's value changes
-  changedCallback() {
-    this.setColor();
-  }
+	// Called whenever the attribute's value changes
+	changedCallback() {
+		this.setColor()
+	}
 
-  setColor() {
-    this.ownerElement.style.backgroundColor = this.value;
-  }
+	setColor() {
+		this.ownerElement.style.backgroundColor = this.value
+	}
 }
 
-customAttributes.default.define('bg-color', BgColor);
+customAttributes.default.define('bg-color', BgColor)
 ```
 
 ## API
 
-custom-attributes follows a very similar API as v1 custom elements, but rather than a class instance representing the host element, the class instance is meant to represent the *attribute*.
+custom-attributes follows a very similar API as v1 custom elements, but rather than a class instance representing the host element, the class instance is meant to represent the _attribute_.
 
 ### Lifecycle callbacks
 
