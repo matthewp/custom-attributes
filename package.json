@@ -24,7 +24,7 @@
 	},
 	"scripts": {
 		"build": "pack build",
-		"test": "testee test/connect.html test/disconnect.html test/change.html --browsers firefox",
+		"test": "echo TODO",
 		"prepare": "npm run build"
 	},
 	"repository": {
@@ -46,10 +46,7 @@
 		"@pika/plugin-build-umd": "^0.3.7",
 		"@pika/plugin-build-web": "^0.3.7",
 		"@pika/plugin-standard-pkg": "^0.3.7",
-		"mocha-test": "^1.0.3",
 		"prettier": "^2.2.1",
-		"rollup": "^0.41.4",
-		"testee": "^0.3.0",
-		"webcomponents.js": "^0.7.22"
+		"rollup": "^0.41.4"
 	}
 }
