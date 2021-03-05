@@ -1,0 +1,5 @@
+{
+	"extends": "./node_modules/@lume/cli/config/ts.config.json",
+	"include": ["./src/**/*"],
+	"exclude": ["./src/globals.d.ts"]
+}
