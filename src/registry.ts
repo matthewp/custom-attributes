@@ -16,6 +16,8 @@ export class CustomAttributeRegistry {
 	private _elementMap = new WeakMap<Element, Map<string, CustomAttribute>>()
 
 	constructor(public ownerDocument: Document | ShadowRoot) {
+		// TODO Throw an error if ownerDocument already has a CustomAttributeRegistry instantiated for it.
+
 		if (!ownerDocument) throw new Error('Must be given a document')
 
 		this._observe()
