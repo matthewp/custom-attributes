@@ -1,4 +1,4 @@
-import CustomAttributeRegistry from './registry.js'
+import {CustomAttributeRegistry} from './registry.js'
 
 const win = window as any
 export let customAttributes: CustomAttributeRegistry
@@ -8,4 +8,4 @@ if (!win.$customAttributes?.skipPolyfill) {
 	win.customAttributes = customAttributes
 }
 
-export {customAttributes as default, CustomAttributeRegistry}
+export * from './registry.js'

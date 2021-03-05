@@ -1,19 +1,19 @@
 import type {Constructor} from 'lowclass'
 
-var forEach = Array.prototype.forEach
+const forEach = Array.prototype.forEach
 
-interface CustomAttribute {
+export interface CustomAttribute {
 	ownerElement: Element
 	name: string
-	value: string | null
+	value: string
 	connectedCallback?(): void
 	disconnectedCallback?(): void
-	changedCallback?(oldValue: string | undefined, newValue: string): void
+	changedCallback?(oldValue: string, newValue: string): void
 }
 
-class CustomAttributeRegistry {
-	_attrMap = new Map<string, Constructor>()
-	_elementMap = new WeakMap<Element, Map<string, CustomAttribute>>()
+export class CustomAttributeRegistry {
+	private _attrMap = new Map<string, Constructor>()
+	private _elementMap = new WeakMap<Element, Map<string, CustomAttribute>>()
 
 	constructor(public ownerDocument: Document | ShadowRoot) {
 		if (!ownerDocument) throw new Error('Must be given a document')
@@ -27,61 +27,62 @@ class CustomAttributeRegistry {
 	}
 
 	get(element: Element, attrName: string) {
-		var map = this._elementMap.get(element)
+		const map = this._elementMap.get(element)
 		if (!map) return
 		return map.get(attrName)
 	}
 
-	_getConstructor(attrName: string) {
+	private _getConstructor(attrName: string) {
 		return this._attrMap.get(attrName)
 	}
 
-	observer!: MutationObserver
+	private _observer!: MutationObserver
 
-	_observe() {
-		var customAttributes = this
-		var root = this.ownerDocument
-		var downgrade = this._downgrade.bind(this)
-		var upgrade = this._upgradeElement.bind(this)
+	private _observe() {
+		const root = this.ownerDocument
+		const disconnected = this._elementDisconnected.bind(this)
+		const connected = this._elementConnected.bind(this)
 
-		this.observer = new MutationObserver(mutations => {
+		this._observer = new MutationObserver(mutations => {
 			forEach.call(mutations, (m: MutationRecord) => {
 				if (m.type === 'attributes') {
-					var attr = customAttributes._getConstructor(m.attributeName!)
-					if (attr) customAttributes._found(m.attributeName!, m.target as Element, m.oldValue!)
+					const attr = this._getConstructor(m.attributeName!)
+					if (attr) this._handleChange(m.attributeName!, m.target as Element, m.oldValue)
 				}
 				// chlidList
 				else {
-					forEach.call(m.removedNodes, downgrade)
-					forEach.call(m.addedNodes, upgrade)
+					forEach.call(m.removedNodes, disconnected)
+					forEach.call(m.addedNodes, connected)
 				}
 			})
 		})
 
-		this.observer.observe(root, {childList: true, subtree: true, attributes: true, attributeOldValue: true})
+		this._observer.observe(root, {childList: true, subtree: true, attributes: true, attributeOldValue: true})
 	}
 
-	// TODO I'm not sure if document has the correct type. But the JavaScript works.
-	_upgradeAttr(attrName: string, document: Element | Document | ShadowRoot = this.ownerDocument) {
-		var matches = document.querySelectorAll('[' + attrName + ']')
+	private _upgradeAttr(attrName: string, node: Element | Document | ShadowRoot = this.ownerDocument) {
+		const matches = node.querySelectorAll('[' + attrName + ']')
 
+		// Possibly create custom attributes that may be in the given 'node' tree.
 		// Use a forEach as Edge doesn't support for...of on a NodeList
-		forEach.call(matches, (match: Element) => this._found(attrName, match))
+		forEach.call(matches, (element: Element) => this._handleChange(attrName, element, null))
 	}
 
-	_upgradeElement(element: Element) {
+	private _elementConnected(element: Element) {
 		if (element.nodeType !== 1) return
 
+		// For each of the connected element's attribute, possibly instantiate the custom attributes.
 		// Use a forEach as Safari 10 doesn't support for...of on NamedNodeMap (attributes)
 		forEach.call(element.attributes, (attr: Attr) => {
-			if (this._getConstructor(attr.name)) this._found(attr.name, element)
+			if (this._getConstructor(attr.name)) this._handleChange(attr.name, element, null)
 		})
 
+		// Possibly instantiate custom attributes that may be in the subtree of the connected element.
 		this._attrMap.forEach((_constructor, attr) => this._upgradeAttr(attr, element))
 	}
 
-	_downgrade(element: Element) {
-		var map = this._elementMap.get(element)
+	private _elementDisconnected(element: Element) {
+		const map = this._elementMap.get(element)
 		if (!map) return
 
 		map.forEach(inst => inst.disconnectedCallback?.(), this)
@@ -89,29 +90,35 @@ class CustomAttributeRegistry {
 		this._elementMap.delete(element)
 	}
 
-	_found(attrName: string, el: Element, oldVal?: string) {
-		var map = this._elementMap.get(el)
+	private _handleChange(attrName: string, el: Element, oldVal: string | null) {
+		let map = this._elementMap.get(el)
 		if (!map) this._elementMap.set(el, (map = new Map()))
 
-		var inst = map.get(attrName)
-		var newVal = el.getAttribute(attrName)
+		let inst = map.get(attrName)
+		const newVal = el.getAttribute(attrName)
+
 		if (!inst) {
-			var Constructor = this._getConstructor(attrName)!
+			const Constructor = this._getConstructor(attrName)!
 			inst = new Constructor() as CustomAttribute
 			map.set(attrName, inst)
 			inst.ownerElement = el
 			inst.name = attrName
+			if (newVal == null) throw new Error('Not possible!')
 			inst.value = newVal
 			inst.connectedCallback?.()
+			return
 		}
+
 		// Attribute was removed
-		else if (newVal == null) {
+		if (newVal == null) {
 			inst.disconnectedCallback?.()
 			map.delete(attrName)
 		}
+
 		// Attribute changed
 		else if (newVal !== inst.value) {
 			inst.value = newVal
+			if (oldVal == null) throw new Error('Not possible!')
 			inst.changedCallback?.(oldVal, newVal)
 		}
 	}
