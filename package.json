@@ -12,7 +12,7 @@
 		"dev": "lume dev",
 		"typecheck": "lume typecheck",
 		"typecheck:watch": "lume typecheckWatch",
-		"test": "lume test",
+		"test": "npm run prettier:check && npm run build && echo TODO use 'lume test'",
 		"test:debug": "lume testDebug",
 		"prettier": "lume prettier",
 		"prettier:check": "lume prettierCheck",
