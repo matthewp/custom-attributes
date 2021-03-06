@@ -12,16 +12,16 @@
 		<mocha-test>
 			<template>
 				<script>
-					describe('get()', function() {
+					describe('get()', function () {
 						function later(fn) {
 							setTimeout(fn, 0)
 						}
 
-						afterEach(function() {
+						afterEach(function () {
 							fixture.innerHTML = ''
 						})
 
-						it('gets the attribute instance', function(done) {
+						it('gets the attribute instance', function (done) {
 							class Foobar {}
 							customAttributes.default.define('foo-bar', Foobar)
 
@@ -29,14 +29,14 @@
 							el.setAttribute('foo-bar', 'baz')
 							fixture.appendChild(el)
 
-							later(function() {
+							later(function () {
 								var fooBar = customAttributes.get(el, 'foo-bar')
 								assert.ok(fooBar instanceof Foobar)
 								done()
 							})
 						})
 
-						it('allows passing more complex data types', function(done) {
+						it('allows passing more complex data types', function (done) {
 							class Foobar {
 								set baz(val) {
 									assert.equal(val, 'hello world')
@@ -49,7 +49,7 @@
 							el.setAttribute('foo-bar', 'bam')
 							fixture.appendChild(el)
 
-							later(function() {
+							later(function () {
 								var fooBar = customAttributes.get(el, 'foo-bar')
 								fooBar.baz = 'hello world'
 							})

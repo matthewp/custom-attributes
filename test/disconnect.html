@@ -13,19 +13,19 @@
 		<mocha-test>
 			<template>
 				<script>
-					describe('disconnectedCallback()', function() {
+					describe('disconnectedCallback()', function () {
 						function later(cb) {
 							setTimeout(cb, 0)
 						}
 
-						afterEach(function() {
+						afterEach(function () {
 							fixture.innerHTML = ''
 						})
 
-						it('Is called when removeAttribute() is used', function(done) {
+						it('Is called when removeAttribute() is used', function (done) {
 							class MyAttr {
 								connectedCallback() {
-									later(function() {
+									later(function () {
 										el.removeAttribute('my-attr')
 									})
 								}
@@ -48,10 +48,10 @@
 							el.setAttribute('my-attr', 'test')
 						})
 
-						it('Is called when the element is removed', function(done) {
+						it('Is called when the element is removed', function (done) {
 							class SomeAttr {
 								connectedCallback() {
-									later(function() {
+									later(function () {
 										fixture.removeChild(el)
 									})
 								}

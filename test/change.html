@@ -12,16 +12,16 @@
 		<mocha-test>
 			<template>
 				<script>
-					describe('changedCallback()', function() {
+					describe('changedCallback()', function () {
 						function later(cb) {
 							setTimeout(cb, 4)
 						}
 
-						afterEach(function() {
+						afterEach(function () {
 							fixture.innerHTML = ''
 						})
 
-						it('Is called when an attribute changes value', function(done) {
+						it('Is called when an attribute changes value', function (done) {
 							class SomeAttr {
 								changedCallback() {
 									assert.ok(true)
@@ -35,12 +35,12 @@
 							el.setAttribute('some-attr', 'foo')
 							fixture.appendChild(el)
 
-							later(function() {
+							later(function () {
 								el.setAttribute('some-attr', 'bar')
 							})
 						})
 
-						it("Is not called when an attribute's value remains the same", function(done) {
+						it("Is not called when an attribute's value remains the same", function (done) {
 							class AnotherAttr {
 								changedCallback() {
 									assert.ok(false)
@@ -53,7 +53,7 @@
 							el.setAttribute('another-attr', 'foo')
 							fixture.appendChild(el)
 
-							later(function() {
+							later(function () {
 								el.setAttribute('another-attr', 'foo')
 								later(done)
 							})

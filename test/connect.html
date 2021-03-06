@@ -15,7 +15,7 @@
 		<div id="fixture"></div>
 
 		<script>
-			;(function() {
+			;(function () {
 				class BgColorAttr {
 					connectedCallback() {
 						this.setColor()
@@ -38,34 +38,34 @@
 		<mocha-test>
 			<template>
 				<script>
-					describe('connectedCallback()', function() {
+					describe('connectedCallback()', function () {
 						function later(cb) {
 							setTimeout(cb, 4)
 						}
 
-						afterEach(function() {
+						afterEach(function () {
 							fixture.innerHTML = ''
 						})
 
-						it('Is called when element is already in the DOM', function() {
+						it('Is called when element is already in the DOM', function () {
 							var article = document.querySelector('article')
 							assert.equal(article.style.backgroundColor, 'red')
 						})
 
-						it('Is called when an attribute is dynamically created', function(done) {
+						it('Is called when an attribute is dynamically created', function (done) {
 							var article = document.createElement('article')
 							article.textContent = 'hello world'
 							fixture.appendChild(article)
 
 							article.setAttribute('bg-color', 'blue')
 
-							later(function() {
+							later(function () {
 								assert.equal(article.style.backgroundColor, 'blue')
 								done()
 							})
 						})
 
-						it('Is called on nested elements when root element is added to the DOM', function(done) {
+						it('Is called on nested elements when root element is added to the DOM', function (done) {
 							var article = document.createElement('article'),
 								header = document.createElement('header')
 
@@ -74,7 +74,7 @@
 
 							fixture.appendChild(article)
 
-							later(function() {
+							later(function () {
 								assert.equal(header.style.backgroundColor, 'blue')
 								done()
 							})
