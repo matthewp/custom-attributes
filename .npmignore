@@ -1,4 +1,20 @@
-**/*
+# Specificity (mot just order) of the following rules matters.
 
-!src/
-!dist/
+# Ignore everything,
+/**/*
+
+# but include these folders
+!/dist/**/*
+!/src/**/*
+
+# except for these files in the above folders.
+/dist/**/*.test.*
+/dist/tests/**/*
+/src/**/*.test.*
+/src/tests/**/*
+
+# The following won't work as you think it would. The test files will not be ignored as you may assume.
+# /**/*
+# !/dist/**/*
+# !/src/**/*
+# /**/*.test.*
