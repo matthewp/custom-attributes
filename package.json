@@ -1,6 +1,6 @@
 {
 	"name": "@lume/custom-attributes",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "Custom attributes: like custom elements, but for attributes",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
