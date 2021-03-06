@@ -8,4 +8,6 @@ if (!win.$customAttributes?.skipPolyfill) {
 	win.customAttributes = customAttributes
 }
 
+export * from './registry.js'
+
 export const version = '0.1.0'
