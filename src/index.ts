@@ -10,4 +10,4 @@ if (!win.$customAttributes?.skipPolyfill) {
 
 export * from './registry.js'
 
-export const version = '0.1.0'
+export const version = '0.1.1'
